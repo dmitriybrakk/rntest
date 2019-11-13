@@ -2,7 +2,7 @@ import React from 'react';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
-import Screen from './Screen';
+import Screen from './screens/people';
 
 let initialState = {
   people: [],
