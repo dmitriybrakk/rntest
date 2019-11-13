@@ -22,6 +22,7 @@ module.exports = {
         'global-require': 0,
         'import/prefer-default-export': 0,
         'import/no-named-as-default': 0,
+        'import/no-cycle': 0,
         'no-unused-vars': 0,
         'no-undef': 2,
         'no-param-reassign': 0,
@@ -57,6 +58,9 @@ module.exports = {
         react: {
             version: "detect"
         },
+        "import/core-modules": [
+            "typings/platform"
+        ],
         "import/resolver": {
             "node": {
                 "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]

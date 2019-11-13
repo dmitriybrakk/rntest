@@ -19,9 +19,14 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "typeRoots" : ["./node_modules/@types"]
+    "typeRoots" : ["./typings", "./node_modules/@types"],
+    "paths": {
+      "*" : ["typings/*"],
+      "typings/*": ["typings/*"]
+    }
   },
   "include": [
+    "./typings/**/*",
     "./src/**/*",
     "./**/*.js"
   ]
