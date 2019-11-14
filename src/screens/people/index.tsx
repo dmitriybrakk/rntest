@@ -1,88 +1,64 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, RefreshControl, ScrollView, TouchableOpacity, Text, SafeAreaView } from 'react-native';
 import api from '../../../api';
+import List from '../../layouts/list';
+import Card from '../../components/card';
+import { UPDATE_PEOPLE } from '../../constants/actions/people';
 
-class Screen extends React.Component {
+interface Props {
+    updatePeople: (data: People.Person[]) => void;
+    carAmounts: { [brand: string]: number };
+}
+interface State {
+    loading: boolean;
+}
+
+class Screen extends React.Component<Props, State> {
     state = {
         loading: true,
     };
 
-    constructor(props) {
-        super(props);
-        api.loadData().then(data => {
-            console.log(this.props);
-            this.props.updatePeople(data);
-            this.setState({ loading: false });
-        });
+    componentDidMount(): void {
+        this.handleLoadPeople();
     }
+
+    handleLoadPeople = async () => {
+        this.setState({ loading: true }, () => {
+            const { updatePeople } = this.props;
+
+            api.loadData()
+                .then((data: People.Person[]) => updatePeople(data))
+                .finally(() => {
+                    this.setState({ loading: false });
+                });
+        });
+    };
 
     render() {
-        const cars = this.props.people.map(x => x.car.name).filter((x, i, arr) => arr.indexOf(x) === i);
-
-        const amounts = cars.map(car =>
-            this.props.people.reduce((result, p) => (p.car.name === car ? result + 1 : result), 0),
-        );
+        const { loading } = this.state;
+        const { carAmounts } = this.props;
 
         return (
-            <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView
-                    style={{ flex: 1 }}
-                    refreshControl={<RefreshControl onRefresh={() => this.refresh()} refreshing={this.state.loading} />}
-                >
-                    <TouchableOpacity onPress={() => this.props.toggleTheme()}>
-                        <Text
-                            style={{
-                                borderRadius: 4,
-                                margin: 8,
-                                padding: 8,
-                                backgroundColor: '#cae',
-                                alignSelf: 'stretch',
-                                textAlign: 'center',
-                            }}
-                        >
-                            Toogle theme
-                        </Text>
-                    </TouchableOpacity>
-                    {cars.map((car, i) => {
-                        return (
-                            <View
-                                style={{
-                                    padding: 15,
-                                    backgroundColor: this.props.theme === 'light' ? 'white' : '#aaa',
-                                }}
-                            >
-                                <Text style={{ fontSize: 16 }}>
-                                    Brand:
-                                    {car}
-                                </Text>
-                                <Text style={{ marginTop: 4 }}>
-                                    Amount:
-                                    {amounts[i]}
-                                </Text>
-                            </View>
-                        );
-                    })}
-                </ScrollView>
-            </SafeAreaView>
+            <List loading={loading} onRefresh={this.handleLoadPeople}>
+                {Object.keys(carAmounts).map((car: string) => (
+                    <Card key={car} title={`Brand: ${car}`} subtitle={`Amount: ${carAmounts[car]}`} />
+                ))}
+            </List>
         );
-    }
-
-    async refresh() {
-        this.setState({ loading: true });
-        const data = await api.loadData();
-        this.props.updatePeople(data);
-        this.setState({ loading: false });
     }
 }
 
-export default connect(
-    state => ({
-        people: state.people,
-        theme: state.theme,
-    }),
-    dispatch => ({
-        updatePeople: people => dispatch({ type: 'UPDATE_PEOPLE', people }),
-        toggleTheme: () => dispatch({ type: 'TOGGLE_THEME' }),
-    }),
-)(Screen);
+const mapStateToProps = state => ({
+    carAmounts: state.people.reduce(
+        (result: { [brand: string]: number }, person: People.Person) => ({
+            ...result,
+            [person.car.name]: result[person.car.name] ? result[person.car.name] + 1 : 1,
+        }),
+        {},
+    ),
+});
+const mapDispatchToProps = dispatch => ({
+    updatePeople: (people: People.Person[]) => dispatch({ type: UPDATE_PEOPLE, payload: people }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Screen);

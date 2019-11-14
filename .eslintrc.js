@@ -3,10 +3,10 @@ module.exports = {
     extends: [
         '@react-native-community',
         'airbnb-typescript',
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "prettier/@typescript-eslint",
-        "plugin:prettier/recommended"
+        'plugin:react/recommended',
+        'plugin:@typescript-eslint/recommended',
+        'prettier/@typescript-eslint',
+        'plugin:prettier/recommended'
     ],
     parserOptions: {
         ecmaVersion: 2018,
@@ -39,31 +39,31 @@ module.exports = {
         'jsx-a11y/anchor-is-valid': 0,
         'class-methods-use-this': 0,
         'react/default-props-match-prop-types': 0,
-
-        "react/react-in-jsx-scope": [
+        'react/no-state-constructor': 0,
+        'react/react-in-jsx-scope': [
             0
         ],
-        "react/prop-types": [
+        'react/prop-types': [
             0
         ],
-        "quotes": 0,
-        "import/no-extraneous-dependencies": [
+        'quotes': 0,
+        'import/no-extraneous-dependencies': [
             "error",
             {
-                "devDependencies": true
+                'devDependencies': true
             }
         ]
     },
     settings: {
         react: {
-            version: "detect"
+            version: 'detect'
         },
-        "import/core-modules": [
-            "typings/platform"
+        'import/core-modules': [
+            'typings/platform'
         ],
-        "import/resolver": {
-            "node": {
-                "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+        'import/resolver': {
+            'node': {
+                'extensions': ['.js', '.jsx', '.ts', '.tsx', '.d.ts']
             }
         }
     }

@@ -1,16 +1,22 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-
-import { store } from '../store';
-
+import { connect } from 'react-redux';
+import { ThemeContext } from './constants/app/theme';
 import People from './screens/people';
 
-const App = () => {
-    return (
-        <Provider store={store}>
-            <People />
-        </Provider>
-    );
-};
+interface Props {
+    theme: App.Theme;
+}
+
+const AppRouter = ({ theme }: Props) => (
+    <ThemeContext.Provider value={theme}>
+        <People />
+    </ThemeContext.Provider>
+);
+
+const mapStateToProps = state => ({
+    theme: state.app.theme,
+});
+
+const App = connect(mapStateToProps)(AppRouter);
 
 export default App;

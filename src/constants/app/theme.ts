@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const PALETTE = {
     white: '#fff',
     lightTheme: '#fff',
@@ -5,7 +7,4 @@ export const PALETTE = {
     buttonColor: '#cae',
 };
 
-export const THEME = {
-    light: 'light',
-    dark: 'dark',
-};
+export const ThemeContext = React.createContext('light'); // TODO App.Theme.light

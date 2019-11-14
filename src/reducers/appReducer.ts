@@ -1,7 +1,6 @@
-import { createReducer } from '.';
-import { TOGGLE_THEME } from '../constants/actions/app';
 import { toggleTheme } from '../action-creators/app';
-import { THEME } from '../constants/app/theme';
+import { TOGGLE_THEME } from '../constants/actions/app';
+import { createReducer } from '.';
 
 type Types = typeof TOGGLE_THEME;
 interface State {
@@ -11,12 +10,12 @@ type ToggleThemeAction = ReturnType<typeof toggleTheme>;
 type Action = ToggleThemeAction;
 
 const initialState: State = {
-    theme: THEME.light,
+    theme: 'light',
 };
 const handlers = {
     [TOGGLE_THEME]: (state: State) => ({
         ...state,
-        theme: state.theme === App.Theme.light ? 'dark' : 'light',
+        theme: state.theme === 'light' ? 'dark' : 'light',
     }),
 };
 

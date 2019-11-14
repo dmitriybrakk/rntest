@@ -1,6 +1,6 @@
-import { createReducer } from '.';
-import { UPDATE_PEOPLE } from '../constants/actions/people';
 import { updatePeople } from '../action-creators/people';
+import { UPDATE_PEOPLE } from '../constants/actions/people';
+import { createReducer } from '.';
 
 type Types = typeof UPDATE_PEOPLE;
 type State = People.Person[];
